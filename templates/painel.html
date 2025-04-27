@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Painel de Vendas</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg-color: #f4f6f8;
+            --text-color: #333;
+            --card-bg: white;
+            --header-bg: #4CAF50;
+            --button-bg: #f44336;
+            --meta-color: #ff9800;
+            --table-header: #4CAF50;
+        }
+
+        body.dark-mode {
+            --bg-color: #121212;
+            --text-color: #f0f0f0;
+            --card-bg: #1e1e1e;
+            --header-bg: #333;
+            --button-bg: #ff5252;
+            --meta-color: #ffc107;
+            --table-header: #333;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 0;
+            color: var(--text-color);
+            transition: background 0.3s, color 0.3s;
+        }
+        .header {
+            background-color: var(--header-bg);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 24px;
+            position: relative;
+        }
+        .logout, .toggle-mode {
+            position: absolute;
+            top: 20px;
+            padding: 8px 12px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+        }
+        .logout {
+            right: 120px;
+            background-color: var(--button-bg);
+            color: white;
+        }
+        .toggle-mode {
+            right: 20px;
+            background-color: #2196F3;
+            color: white;
+        }
+        .logout:hover {
+            background-color: #d32f2f;
+        }
+        .toggle-mode:hover {
+            background-color: #1976D2;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: background 0.3s;
+        }
+        .saldo {
+            font-size: 28px;
+            margin-bottom: 20px;
+            text-align: center;
+            color: var(--text-color);
+        }
+        .meta {
+            text-align: center;
+            font-size: 20px;
+            color: var(--meta-color);
+            margin-bottom: 30px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+            background: var(--card-bg);
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 12px;
+            text-align: center;
+        }
+        th {
+            background-color: var(--table-header);
+            color: white;
+        }
+        canvas {
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        Painel de Vendas
+        <form method="GET" action="/" style="display:inline;">
+            <button class="logout" type="submit">Logout</button>
+        </form>
+        <button class="toggle-mode" onclick="alternarModo()">Alternar Modo</button>
+		<form method="GET" action="/relatorio" style="display:inline;">
+    		<button class="logout" style="background-color: #ff9800; right: 220px;" type="submit">Gerar PDF</button>
+		</form>
+    </div>
+
+    <div class="container">
+        <div class="saldo">
+            Saldo Atual: <strong>R$ {{ saldo }}</strong>
+        </div>
+
+        {% if saldo >= 500 %}
+        <div class="meta">
+            🚀 Parabéns! Você atingiu sua meta de vendas!
+        </div>
+        {% endif %}
+
+        <canvas id="graficoVendas"></canvas>
+        <script>
+            const ctx = document.getElementById('graficoVendas').getContext('2d');
+            const graficoVendas = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: {{ produtos | safe }},
+                    datasets: [{
+                        label: 'Comissão (R$)',
+                        data: {{ comissoes | safe }},
+                        backgroundColor: '#4CAF50',
+                        borderColor: '#388E3C',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    animation: {
+                        duration: 2000,
+                        easing: 'easeOutBounce'
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            function alternarModo() {
+                document.body.classList.toggle('dark-mode');
+            }
+        </script>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Produto</th>
+                    <th>Vendas</th>
+                    <th>Comissão</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for venda in vendas %}
+                <tr>
+                    <td>{{ venda.produto }}</td>
+                    <td>{{ venda.vendas }}</td>
+                    <td>R$ {{ venda.comissao }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
