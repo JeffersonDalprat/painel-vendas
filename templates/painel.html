@@ -2,9 +2,12 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Painel de Vendas</title>
+    <title>Dashboard Jefferson</title>
     <link rel="stylesheet" href="/static/style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
 </head>
 <body>
     <div class="navbar">
@@ -14,24 +17,34 @@
     </div>
 
     <div class="content">
-        <h1>Painel de Vendas</h1>
-        <p>Saldo: R$ {{ saldo }}</p>
+        <h1>Dashboard Jefferson</h1>
+        <p>Saldo total de vendas: <strong>R$ {{ saldo }}</strong></p>
 
-        <table>
-            <tr>
-                <th>Produto</th>
-                <th>Data</th>
-                <th>Vendas</th>
-                <th>Comissão</th>
-            </tr>
-            {% for venda in vendas %}
-            <tr>
-                <td>{{ venda.produto }}</td>
-                <td>{{ venda.data }}</td>
-                <td>{{ venda.vendas }}</td>
-                <td>R$ {{ venda.comissao }}</td>
-            </tr>
-            {% endfor %}
+        <div class="charts">
+            <canvas id="graficoPizza"></canvas>
+            <canvas id="graficoLinha"></canvas>
+        </div>
+
+        <h2>Tabela de Vendas</h2>
+        <table id="tabelaVendas">
+            <thead>
+                <tr>
+                    <th>Produto</th>
+                    <th>Data</th>
+                    <th>Vendas</th>
+                    <th>Comissão</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for venda in vendas %}
+                <tr>
+                    <td>{{ venda.produto }}</td>
+                    <td>{{ venda.data }}</td>
+                    <td>{{ venda.vendas }}</td>
+                    <td>R$ {{ venda.comissao }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
         </table>
 
         <br>
@@ -43,6 +56,36 @@
         function toggleDarkMode() {
             document.body.classList.toggle("dark-mode");
         }
+
+        $(document).ready(function () {
+            $('#tabelaVendas').DataTable();
+        });
+
+        const ctx1 = document.getElementById('graficoPizza').getContext('2d');
+        const graficoPizza = new Chart(ctx1, {
+            type: 'pie',
+            data: {
+                labels: [{% for venda in vendas %}"{{ venda.produto }}",{% endfor %}],
+                datasets: [{
+                    label: 'Vendas por Produto',
+                    data: [{% for venda in vendas %}{{ venda.vendas }},{% endfor %}],
+                    borderWidth: 1
+                }]
+            }
+        });
+
+        const ctx2 = document.getElementById('graficoLinha').getContext('2d');
+        const graficoLinha = new Chart(ctx2, {
+            type: 'line',
+            data: {
+                labels: [{% for venda in vendas %}"{{ venda.data }}",{% endfor %}],
+                datasets: [{
+                    label: 'Comissões',
+                    data: [{% for venda in vendas %}{{ venda.comissao }},{% endfor %}],
+                    borderWidth: 2
+                }]
+            }
+        });
     </script>
 </body>
 </html>
