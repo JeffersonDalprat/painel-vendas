@@ -5,7 +5,7 @@ import io
 import pandas as pd
 
 app = Flask(__name__)
-app.secret_key = 'segredo-super-seguro'
+app.secret_key = 'super-key-segura'
 
 usuario_padrao = "Jefferson"
 senha_padrao = "Dalprat#1"
