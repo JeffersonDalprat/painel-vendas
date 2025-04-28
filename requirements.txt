@@ -1,6 +1,5 @@
-
 Flask
 requests
-tweepy
-schedule
 reportlab
+pandas
+xlsxwriter
