@@ -87,3 +87,70 @@ def page_not_found(e):
 
 if __name__ == "__main__":
     app.run()
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from email.mime.application import MIMEApplication
+import schedule
+import time
+
+def enviar_email_relatorio():
+    remetente = "jrdalpratusa@gmail.com"
+    senha = "ebfqoppyuxeodoeh"  # Sem espaços
+    destinatario = "jrdalpratusa@gmail.com"
+
+    # Criar o e-mail
+    msg = MIMEMultipart()
+    msg['From'] = remetente
+    msg['To'] = destinatario
+    msg['Subject'] = "Relatório de Vendas - Dashboard Jefferson"
+    corpo = "Segue em anexo o relatório de vendas do dia."
+    msg.attach(MIMEText(corpo, 'plain'))
+
+    # Gerar PDF na hora
+    buffer = io.BytesIO()
+    pdf = canvas.Canvas(buffer, pagesize=letter)
+    largura, altura = letter
+    pdf.setFont("Helvetica-Bold", 18)
+    pdf.drawCentredString(largura / 2, altura - 50, "Relatório de Vendas Diário")
+    pdf.setFont("Helvetica", 12)
+    y = altura - 100
+    for venda in vendas:
+        texto = f"Produto: {venda['produto']} | Vendas: {venda['vendas']} | Comissão: R$ {venda['comissao']} | Data: {venda['data']}"
+        pdf.drawString(50, y, texto)
+        y -= 20
+        if y < 50:
+            pdf.showPage()
+            pdf.setFont("Helvetica", 12)
+            y = altura - 50
+    saldo_total = sum(v["comissao"] for v in vendas)
+    pdf.setFont("Helvetica-Bold", 14)
+    pdf.drawString(50, y - 30, f"Saldo Final: R$ {saldo_total}")
+    pdf.save()
+    buffer.seek(0)
+
+    # Anexar o PDF no email
+    anexo = MIMEApplication(buffer.read(), _subtype="pdf")
+    anexo.add_header('Content-Disposition', 'attachment', filename="relatorio_vendas.pdf")
+    msg.attach(anexo)
+
+    # Enviar o e-mail
+    try:
+        servidor = smtplib.SMTP('smtp.gmail.com', 587)
+        servidor.starttls()
+        servidor.login(remetente, senha)
+        servidor.send_message(msg)
+        servidor.quit()
+        print("Relatório enviado com sucesso!")
+    except Exception as e:
+        print(f"Erro ao enviar e-mail: {e}")
+
+# Para testar agora:
+# enviar_email_relatorio()
+# Agendar para enviar todo dia às 8h da manhã
+schedule.every().day.at("08:00").do(enviar_email_relatorio)
+
+# Rodar o agendador
+while True:
+    schedule.run_pending()
+    time.sleep(60)
