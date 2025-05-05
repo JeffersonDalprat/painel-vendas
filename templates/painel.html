@@ -2,22 +2,24 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Dashboard Jefferson</title>
-    <link rel="stylesheet" href="/static/style.css">
+    <title>Dashboard - Afiliados Elite</title>
+    <link rel="stylesheet" href="/static/style_aprimorado.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
 </head>
 <body>
     <div class="navbar">
         <span>Bem-vindo, {{ usuario }}!</span>
-        <button onclick="toggleDarkMode()">Alternar Modo</button>
-        <a href="/logout">Logout</a>
+        <div>
+            <button onclick="toggleDarkMode()">Alternar Modo</button>
+            <a href="/logout">Logout</a>
+        </div>
     </div>
 
     <div class="content">
-        <h1>Dashboard Jefferson</h1>
+        <h1>Dashboard - Afiliados Elite</h1>
         <p>Saldo total de vendas: <strong>R$ {{ saldo }}</strong></p>
 
         <div class="charts">
@@ -47,9 +49,8 @@
             </tbody>
         </table>
 
-        <br>
-        <a href="/relatorio" class="button">Gerar Relatório PDF</a>
-        <a href="/exportar_excel" class="button">Exportar para Excel</a>
+        <a href="/relatorio" class="button">📄 Gerar PDF</a>
+        <a href="/exportar_excel" class="button">📊 Exportar Excel</a>
     </div>
 
     <script>
@@ -62,7 +63,7 @@
         });
 
         const ctx1 = document.getElementById('graficoPizza').getContext('2d');
-        const graficoPizza = new Chart(ctx1, {
+        new Chart(ctx1, {
             type: 'pie',
             data: {
                 labels: [{% for venda in vendas %}"{{ venda.produto }}",{% endfor %}],
@@ -75,14 +76,15 @@
         });
 
         const ctx2 = document.getElementById('graficoLinha').getContext('2d');
-        const graficoLinha = new Chart(ctx2, {
+        new Chart(ctx2, {
             type: 'line',
             data: {
                 labels: [{% for venda in vendas %}"{{ venda.data }}",{% endfor %}],
                 datasets: [{
                     label: 'Comissões',
                     data: [{% for venda in vendas %}{{ venda.comissao }},{% endfor %}],
-                    borderWidth: 2
+                    borderWidth: 2,
+                    fill: false
                 }]
             }
         });
