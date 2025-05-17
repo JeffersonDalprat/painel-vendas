@@ -1,7 +1,11 @@
 {
   "version": 2,
   "builds": [
+<<<<<<< HEAD
     { "src": "api/index.py", "use": "@vercel/python" }
+=======
+    { "src": "api/index.py", "use": "@vercel/python@3.8" }
+>>>>>>> 223a8b5 (Preparando rebase para corrigir push)
   ],
   "routes": [
     { "src": "/(.*)", "dest": "api/index.py" }

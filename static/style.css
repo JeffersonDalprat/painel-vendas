@@ -83,3 +83,13 @@ th, td {
         grid-template-columns: 1fr;
     }
 }
+.logo-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.logo-img {
+    max-width: 200px;
+    height: auto;
+    filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.3));
+}

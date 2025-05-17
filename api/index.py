@@ -1,8 +1,11 @@
+# api/index.py
+
 from flask import Flask, render_template, request, redirect, url_for, send_file, session
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 import io
 import pandas as pd
+import os
 
 app = Flask(__name__)
 app.secret_key = 'super-key-segura'
@@ -76,10 +79,7 @@ def exportar_excel():
 def page_not_found(e):
     return render_template('404.html'), 404
 
-# ✅ Para Vercel funcionar corretamente:
-handler = app
-
-from flask import Request
-
-def handler(request):
-    return app.full_dispatch_request()
+# ⚠️ Importante para Render funcionar: executa Flask com a porta dinâmica
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 10000))  # Render usa variável PORT
+    app.run(host="0.0.0.0", port=port)
