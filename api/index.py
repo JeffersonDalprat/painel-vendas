@@ -81,5 +81,8 @@ def page_not_found(e):
 
 # ⚠️ Importante para Render funcionar: executa Flask com a porta dinâmica
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 10000))  # Render usa variável PORT
+    port = int(os.environ.get("PORT", 10000))
     app.run(host="0.0.0.0", port=port)
+
+# Adicione esta linha aqui:
+handler = app
