@@ -48,6 +48,23 @@
                 {% endfor %}
             </tbody>
         </table>
+	
+	<form action="/adicionar_venda" method="POST" class="formulario-venda">
+	    <h3>Adicionar Nova Venda</h3>
+	    <label for="produto">Produto:</label>
+	    <input type="text" id="produto" name="produto" required>
+
+	    <label for="vendas">Quantidade Vendida:</label>
+	    <input type="number" id="vendas" name="vendas" required>
+
+	    <label for="comissao">Comissão (R$):</label>
+	    <input type="number" step="0.01" id="comissao" name="comissao" required>
+
+	    <label for="data">Data:</label>
+	    <input type="date" id="data" name="data" required>
+
+	    <button type="submit" class="button">Salvar Venda</button>
+	</form>
 
         <a href="/relatorio" class="button">📄 Gerar PDF</a>
         <a href="/exportar_excel" class="button">📊 Exportar Excel</a>

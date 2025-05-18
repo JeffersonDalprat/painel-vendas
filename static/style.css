@@ -93,3 +93,40 @@ th, td {
     height: auto;
     filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.3));
 }
+.formulario-venda {
+    background-color: #f8f9fa;
+    padding: 20px;
+    margin-top: 30px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    max-width: 500px;
+}
+.formulario-venda h3 {
+    margin-bottom: 15px;
+    color: #333;
+}
+.formulario-venda label {
+    display: block;
+    margin: 10px 0 5px;
+    font-weight: bold;
+}
+.formulario-venda input {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+.formulario-venda .button {
+    margin-top: 15px;
+    padding: 10px 15px;
+    background-color: #2c7be5;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.formulario-venda .button:hover {
+    background-color: #1a5edb;
+}
+
