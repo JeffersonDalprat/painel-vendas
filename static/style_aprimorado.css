@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
 
 body {
@@ -106,11 +105,23 @@ th {
     grid-template-columns: 1fr 1fr;
     gap: 30px;
     margin-top: 40px;
+    align-items: center;
+}
+
+#graficoPizza {
+    max-width: 400px;
+    max-height: 400px;
+    margin: 0 auto;
 }
 
 @media (max-width: 768px) {
     .charts {
         grid-template-columns: 1fr;
+    }
+
+    #graficoPizza {
+        max-width: 100%;
+        height: auto;
     }
 }
 
@@ -118,6 +129,7 @@ th {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
 }
+
 .formulario-venda {
     background-color: #f8f9fa;
     padding: 20px;
