@@ -119,10 +119,15 @@ th {
         grid-template-columns: 1fr;
     }
 
-    #graficoPizza {
-        max-width: 100%;
-        height: auto;
-    }
+#graficoPizza {
+    max-width: 400px;
+    max-height: 400px;
+    width: 100%;
+    height: auto;
+    margin: 0 auto;
+    display: block;
+}
+
 }
 
 @keyframes fadeIn {
