@@ -112,6 +112,7 @@ th {
     max-width: 400px;
     max-height: 400px;
     margin: 0 auto;
+    display: block;
 }
 
 @media (max-width: 768px) {
@@ -119,15 +120,10 @@ th {
         grid-template-columns: 1fr;
     }
 
-#graficoPizza {
-    max-width: 400px;
-    max-height: 400px;
-    width: 100%;
-    height: auto;
-    margin: 0 auto;
-    display: block;
-}
-
+    #graficoPizza {
+        width: 100%;
+        height: auto;
+    }
 }
 
 @keyframes fadeIn {
